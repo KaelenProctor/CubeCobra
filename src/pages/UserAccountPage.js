@@ -142,9 +142,9 @@ const UserAccountPage = ({ defaultNav, loginCallback, patreonClientId, patreonRe
     };
   } else {
     image = {
-      name: user.image_name,
-      uri: user.image,
-      artist: user.artist,
+      name: user.image.imageName,
+      uri: user.image.uri,
+      artist: user.image.artist,
     };
   }
 
