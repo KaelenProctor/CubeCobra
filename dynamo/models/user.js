@@ -64,7 +64,7 @@ const hydrate = (user) => {
     return user;
   }
 
-  user.image = getImageData(user.imageName || 'Ambush Viper');
+  user.image = getImageData(user.imageName || 'Ambush Viper [isd-169]');
 
   return user;
 };

@@ -337,7 +337,7 @@ router.post(
       following: [],
       hideFeatured: false,
       hideTagColors: false,
-      imageName: 'Ambush Viper',
+      imageName: 'Ambush Viper [isd-169]',
       roles: [],
       theme: 'default',
     };
