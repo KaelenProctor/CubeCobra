@@ -25,6 +25,7 @@ interface AlertProps {
   message: string;
 }
 
+/* Test */
 const AddGroupToCubeModal: React.FC<AddGroupToCubeModalProps> = ({ cards, isOpen, setOpen, cubes, packid = null }) => {
   const { csrfFetch } = useContext(CSRFContext);
   const [selectedCube, setSelectedCube] = useState<string | null>(cubes && cubes.length > 0 ? cubes[0].id : null);
