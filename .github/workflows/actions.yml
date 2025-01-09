@@ -12,6 +12,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    permissions:
+      contents: read
+      pull-requests: write
 
     steps:
       - uses: actions/checkout@v4
@@ -30,7 +33,7 @@ jobs:
           config_path: 'eslint.config.mjs'
           extra_args: '--max-warnings=0'
           fail_on_error: true
-          filter_mode: nofilter
+          filter_mode: file
           level: warning
           reporter: github-pr-check
       - name: Run Prettier on changed files
@@ -39,7 +42,7 @@ jobs:
         uses: ./.github/actions/prettier
         with:
           fail_on_error: true
-          filter_mode: nofilter
+          filter_mode: file
           level: warning
           prettier_flags: '**/*.{js,jsx,ts,tsx}'
           reporter: github-pr-check
