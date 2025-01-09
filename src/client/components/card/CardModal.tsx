@@ -12,14 +12,14 @@ import {
   cardEtchedPrice,
   cardFinish,
   cardFoilPrice,
-  cardName,
+  cardName,   
   cardPrice,
   cardPriceEur,
   cardRarity,
   cardStatus,
   cardTags,
   cardTix,
-  cardType,
+      cardType,
   normalizeName,
 } from 'utils/Card';
 import { getLabels } from 'utils/Sort';
@@ -35,8 +35,8 @@ import { Col, Flexbox, Row } from '../base/Layout';
 import { Modal, ModalBody, ModalHeader } from '../base/Modal';
 import Select from '../base/Select';
 import Spinner from '../base/Spinner';
-import Tag from '../base/Tag';
 import Text from '../base/Text';
+import Tag from '../base/Tag';
 import TextArea from '../base/TextArea';
 import Tooltip from '../base/Tooltip';
 import { ColorChecksAddon } from '../ColorCheck';
