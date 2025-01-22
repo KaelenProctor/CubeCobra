@@ -36,11 +36,15 @@ jobs:
           reviewdog_version: v0.20.3
       - name: Test
         if: always()
-        run: ls -R && ls -R artifacts/ && cat $GITHUB_EVENT_PATH
+        run: ls -R artifacts/ && cat $GITHUB_EVENT_PATH
       - name: Run reviewdog for eslint
         if: always()
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CI_PULL_REQUEST: ${{ github.event.workflow_run.pull_requests[0].number }} 
+          CI_REPO_OWNER: ${{ github.event.workflow_run.repository.owner.login }} 
+          CI_REPO_NAME: ${{ github.event.workflow_run.head_sha }} 
+          CI_COMMIT: ${{ github.event.workflow_run.pull_requests[0].number }} 
         run: cat artifacts/eslint.out | reviewdog $REVIEWDOG_BASE_OPTIONS -f "eslint" -name "eslint"
       - name: Run reviewdog for prettier
         if: always()
