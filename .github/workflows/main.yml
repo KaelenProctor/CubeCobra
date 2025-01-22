@@ -16,7 +16,14 @@ jobs:
   download:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    # Filter out skips and bad statuses
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
+      # Reviewdog needs the git checkout
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0        
       # Download all
       - uses: actions/download-artifact@v4
         with:
