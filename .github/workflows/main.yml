@@ -46,6 +46,7 @@ jobs:
           CI_REPO_NAME: ${{ github.event.workflow_run.head_repository.name }} 
           CI_COMMIT: ${{ github.event.workflow_run.head_sha }} 
           CI_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          GITHUB_EVENT_PATH: ''
         run: cat artifacts/eslint.out | reviewdog $REVIEWDOG_BASE_OPTIONS -f "eslint" -name "eslint"
       - name: Run reviewdog for prettier
         if: always()
@@ -56,6 +57,7 @@ jobs:
           CI_REPO_NAME: ${{ github.event.workflow_run.head_repository.name }} 
           CI_COMMIT: ${{ github.event.workflow_run.head_sha }} 
           CI_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          GITHUB_EVENT_PATH: ''
         # Prettier does not have a readable format that reviewdog understands, so we have to give it line formatting code via -efm
         run: |
           cat artifacts/prettier.out | reviewdog $REVIEWDOG_BASE_OPTIONS -name "prettier" \
