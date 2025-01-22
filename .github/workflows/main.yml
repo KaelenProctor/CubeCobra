@@ -10,7 +10,7 @@ on:
       - completed
 
 env:
-  REVIEWDOG_BASE_OPTIONS: '-reporter=github-checks -filter-mode=nofilter -fail-on-error=false -level=error -log-level=debug'
+  REVIEWDOG_BASE_OPTIONS: '-reporter=github-check -filter-mode=nofilter -fail-on-error=false -level=error -log-level=debug'
 
 jobs:
   download:
