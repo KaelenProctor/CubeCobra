@@ -36,7 +36,7 @@ jobs:
           reviewdog_version: v0.20.3
       - name: Test
         if: always()
-        run: ls -R artifacts/ && cat $GITHUB_EVENT_PATH
+        run: ls -R artifacts/ && cat artifacts/*
       - name: Run reviewdog for eslint
         if: always()
         env:
@@ -47,7 +47,7 @@ jobs:
           CI_COMMIT: ${{ github.event.workflow_run.head_sha }} 
           CI_BRANCH: ${{ github.event.workflow_run.head_branch }}
           GITHUB_EVENT_PATH: ''
-        run: cat artifacts/eslint.out | reviewdog $REVIEWDOG_BASE_OPTIONS -f "eslint" -name "eslint"
+        run: cat artifacts/eslint.out | reviewdog $REVIEWDOG_BASE_OPTIONS -strip 5 -f "eslint" -name "eslint"
       - name: Run reviewdog for prettier
         if: always()
         env:
