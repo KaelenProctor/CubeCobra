@@ -21,6 +21,8 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           path: artifacts
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
       - uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: v0.20.3
