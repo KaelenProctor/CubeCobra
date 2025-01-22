@@ -10,7 +10,7 @@ on:
       - completed
 
 env:
-  REVIEWDOG_BASE_OPTIONS: '-reporter=github-check -filter-mode=nofilter -fail-on-error=false -level=error'
+  REVIEWDOG_BASE_OPTIONS: '-guess -reporter=github-check -filter-mode=nofilter -fail-on-error=false -level=error -log-level=debug'
 
 jobs:
   download:
@@ -36,27 +36,17 @@ jobs:
           reviewdog_version: v0.20.3
       - name: Test
         if: always()
-        run: ls -R && ls -R artifacts/
+        run: ls -R && ls -R artifacts/ && cat $GITHUB_EVENT_PATH
       - name: Run reviewdog for eslint
         if: always()
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          if [ -f artifacts/eslint.out ]
-          then
-            cat artifacts/eslint.out | reviewdog $REVIEWDOG_BASE_OPTIONS -f "eslint" -name "eslint"
-          else 
-            echo "No eslint artifact found"
-          fi
+        run: cat artifacts/eslint.out | reviewdog $REVIEWDOG_BASE_OPTIONS -f "eslint" -name "eslint"
       - name: Run reviewdog for prettier
         if: always()
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # Prettier does not have a readable format that reviewdog understands, so we have to give it line formatting code via -efm
         run: |
-          if [ -f artifacts/prettier.out ]
-          then
-            cat artifacts/prettier.out | reviewdog $REVIEWDOG_BASE_OPTIONS -name "prettier" -efm="%E[%trror] %f: %m (%l:%c)" -efm="%C[error]%r" -efm="%Z[error]%r" -efm="%-G%r"
-          else
-            echo "No prettier artifact found"
-          fi
+          cat artifacts/prettier.out | reviewdog $REVIEWDOG_BASE_OPTIONS -name "prettier" \
+          -efm='%E[%trror] %f: %m (%l:%c)' -efm='%C[error]%r' -efm='%Z[error]%r' -efm='%-G%r'
