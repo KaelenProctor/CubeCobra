@@ -10,7 +10,7 @@ on:
       - completed
 
 env:
-  REVIEWDOG_BASE_OPTIONS: '-reporter=github-check -filter-mode=nofilter -fail-on-error=false -level=error -log-level=debug'
+  REVIEWDOG_BASE_OPTIONS: '-reporter=github-pr-review -filter-mode=nofilter -fail-on-error=false -level=error -log-level=debug'
 
 jobs:
   download:
@@ -45,6 +45,7 @@ jobs:
           CI_REPO_OWNER: ${{ github.event.workflow_run.repository.owner.login }} 
           CI_REPO_NAME: ${{ github.event.workflow_run.head_repository.name }} 
           CI_COMMIT: ${{ github.event.workflow_run.head_sha }} 
+          CI_BRANCH: ${{ github.event.workflow_run.head_branch }}
         run: cat artifacts/eslint.out | reviewdog $REVIEWDOG_BASE_OPTIONS -f "eslint" -name "eslint"
       - name: Run reviewdog for prettier
         if: always()
@@ -54,6 +55,7 @@ jobs:
           CI_REPO_OWNER: ${{ github.event.workflow_run.repository.owner.login }} 
           CI_REPO_NAME: ${{ github.event.workflow_run.head_repository.name }} 
           CI_COMMIT: ${{ github.event.workflow_run.head_sha }} 
+          CI_BRANCH: ${{ github.event.workflow_run.head_branch }}
         # Prettier does not have a readable format that reviewdog understands, so we have to give it line formatting code via -efm
         run: |
           cat artifacts/prettier.out | reviewdog $REVIEWDOG_BASE_OPTIONS -name "prettier" \
