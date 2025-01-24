@@ -62,8 +62,8 @@ jobs:
       - id: jq
         uses: direct-actions/jq@v1
         with:
-          arg:
-            WORKSPACE_PATH: '${{ github.workspace }}/'
+          arguments: "--arg WORKSPACE_PATH '${{ github.workspace }}/'"
+          # Replace the absolute path of the action workspace in the paths so they are relative to the repo root. Then when reporting we'll have links to the files/lines in the PR
           filter: '.runs[].artifacts[].location.uri |= sub($WORKSPACE_PATH; ""; "g") | .runs[].results[].locations[].physicalLocation.artifactLocation.uri |= sub($WORKSPACE_PATH; ""; "g")'
           input-files: eslint.sarif
       - run: echo "${{ fromJSON(steps.jq.outputs.output) }}" > eslint.normalized.sarif
