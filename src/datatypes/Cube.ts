@@ -11,7 +11,7 @@ export interface CubeImage {
 
 export interface TagColor {
   color: string | null;
-  tag: string;
+  tag: string
 }
 
 export interface CubeCards {
