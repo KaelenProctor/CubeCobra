@@ -30,8 +30,7 @@ jobs:
             - node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-node-        
-        
+            ${{ runner.os }}-node-
 
       - uses: actions/setup-node@v3
         with:
@@ -47,14 +46,14 @@ jobs:
       - uses: GrantBirki/git-diff-action@v2.7.0
         id: git-diff-action
         with:
-          base_branch: "refs/remotes/origin/${{github.base_ref}}" # compare the PR against the target branch
+          base_branch: 'refs/remotes/origin/${{github.base_ref}}' # compare the PR against the target branch
           json_diff_file_output: diff.json
           raw_diff_file_output: diff.txt
-          file_output_only: "true"
+          file_output_only: 'true'
           # Align file filters with lint-staged. They are single quoted so Git interprets them instead of the shell
           search_path: "'*.js' '*.jsx' '*.ts' '*.tsx'"
           # Only care about file names and non-deleted files
-          git_options: "--name-only --diff-filter=ACMR"
+          git_options: '--name-only --diff-filter=ACMR'
       - name: Run eslint on changed files
         env:
           DIFF: ${{ steps.git-diff-action.outputs.raw-diff-path }}
@@ -67,11 +66,6 @@ jobs:
         with:
           name: eslint.sarif
           path: eslint.sarif
-      - uses: github/codeql-action/upload-sarif@v3
-        with:
-          # Path to SARIF file relative to the root of the repository
-          sarif_file: eslint.sarif
-          category: eslint
       # - name: Run tests
       #   if: success()
       #   run: npm run test:ci
