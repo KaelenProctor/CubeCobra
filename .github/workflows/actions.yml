@@ -59,13 +59,21 @@ jobs:
           DIFF: ${{ steps.git-diff-action.outputs.raw-diff-path }}
         # Even if error run true so the step passes
         run: npx eslint -c .github/eslint.config.mjs -f @microsoft/eslint-formatter-sarif --max-warnings 0 $(cat $DIFF) > eslint.sarif || true
+      - id: jq
+        uses: direct-actions/jq@v1
+        with:
+          arg:
+            -WORKSPACE_PATH="${{ github.workspace }}/"
+          filter: '.runs[].artifacts[].location.uri |= sub($WORKSPACE_PATH; ""; "g") | .runs[].results[].locations[].physicalLocation.artifactLocation.uri |= sub($WORKSPACE_PATH; ""; "g")'
+          input-files: eslint.sarif
+      - run: echo "${{ fromJSON(steps.jq.outputs.output) }}" > eslint.normalized.sarif
       - name: Upload eslint Report
         if: always()
         continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: eslint.sarif
-          path: eslint.sarif
+          path: *.sarif
       # - name: Run tests
       #   if: success()
       #   run: npm run test:ci
