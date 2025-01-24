@@ -66,7 +66,8 @@ jobs:
           # Replace the absolute path of the action workspace in the paths so they are relative to the repo root. Then when reporting we'll have links to the files/lines in the PR
           filter: '.runs[].artifacts[].location.uri |= sub($WORKSPACE_PATH; ""; "g") | .runs[].results[].locations[].physicalLocation.artifactLocation.uri |= sub($WORKSPACE_PATH; ""; "g")'
           input-files: eslint.sarif
-      - run: echo "${{ steps.jq.outputs.output }}" > eslint.normalized.sarif
+          compact-output: true
+      - run: echo '${{ steps.jq.outputs.output }}' > eslint.normalized.sarif
       - name: Upload eslint Report
         if: always()
         continue-on-error: true
