@@ -62,7 +62,8 @@ jobs:
       - id: jq
         uses: direct-actions/jq@v1
         with:
-          arg: -WORKSPACE_PATH="${{ github.workspace }}/"
+          arg:
+            WORKSPACE_PATH: '${{ github.workspace }}/'
           filter: '.runs[].artifacts[].location.uri |= sub($WORKSPACE_PATH; ""; "g") | .runs[].results[].locations[].physicalLocation.artifactLocation.uri |= sub($WORKSPACE_PATH; ""; "g")'
           input-files: eslint.sarif
       - run: echo "${{ fromJSON(steps.jq.outputs.output) }}" > eslint.normalized.sarif
