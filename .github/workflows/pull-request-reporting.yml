@@ -1,0 +1,38 @@
+# Exists because pull_request action doesn't grant permissions if the source is from a fork.
+# So instead of trying to add comments for issues in the pull_request run, we download the reports
+# here and comment. This workflow will run in the context of the main repo and thus have permissions
+name: Pull Request Reporting
+
+on:
+  workflow_run:
+    workflows: [CI Tests]
+    types:
+      - completed
+#permissions:
+#  checks: write
+#  pull-requests: write
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # Filter out skips and bad statuses
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      # Download all
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+      - name: Post SARIF findings in the pull request
+        uses: sett-and-hive/sarif-to-comment-action@v2.0.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.event.workflow_run.head_repository.full_name }}
+          branch: ${{ github.event.workflow_run.head_repository.head_branch }}
+          pr-number: ${{ github.event.workflow_run.pull_requests[0].number }}
+          sarif-file: artifacts/eslint.sarif
+          title: ESLint issues
+          dry-run: false
