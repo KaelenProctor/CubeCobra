@@ -21,6 +21,7 @@ const run = async () => {
     await tryUpdate(podcast);
   }
 
+  // eslint-disable-next-line no-console -- Debugging
   console.log({ message: 'Finished updating podcasts.' });
 
   // this is needed for log group to stream
