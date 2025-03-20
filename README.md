@@ -85,6 +85,18 @@ You will need to make sure you have `bash` installed somewhere and run the follo
 npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"
 ```
 
+### Docker setup
+
+Update .env file with:
+
+```
+EMAIL_CONFIG_SMTP_HOST="mail"
+EMAIL_CONFIG_SMTP_PORT="1025"
+```
+
+1. Initialize: `docker compose -f docker-compose.yml -f ./docker/init.yml`
+2. Run in dev mode: `docker compose up`
+
 ### reCAPTCHA account
 
 To combat spam CubeCobra uses Google reCAPTCHA (V2) in actions such as creating cubes. Thus in order to use the site locally
