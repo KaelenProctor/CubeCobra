@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { BASIC_LAND_MANA_MAPPING } from '../../src/client/utils/cardutil';
 import BlogPost from '../../src/datatypes/BlogPost';
-import Card, { BasicLand, CardDetails } from '../../src/datatypes/Card';
+import Card, { BasicLand, CardDetails, Changes } from '../../src/datatypes/Card';
 import Cube, { CubeImage } from '../../src/datatypes/Cube';
 import User from '../../src/datatypes/User';
 
@@ -147,4 +147,11 @@ export const createBasicLand = (name: BasicLand): Card => {
       produced_mana: [BASIC_LAND_MANA_MAPPING[name]],
     }),
   });
+};
+
+export const createChangelog = (overrides?: Partial<Changes>): Changes => {
+  return {
+    version: 1,
+    ...overrides,
+  } as Changes;
 };
